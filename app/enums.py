@@ -1,9 +1,11 @@
 from enum import Enum
 
 class TransactionType(Enum):
-    INCOME = 1
-    OUTCOME = 2
-    OTHER = 3
+    OUTCOME = '1'
+    INCOME = '2'
+    INVESTMENT_IN = '3'
+    INVESTMENT_OUT = '4'
+    OTHER = '5'
 
 class NodeNames(Enum):
     MOVIMIENTO = 'Movimiento'

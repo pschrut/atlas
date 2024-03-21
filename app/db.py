@@ -2,10 +2,8 @@ from dotenv import load_dotenv
 import os
 import mysql.connector
 
-# Load environment variables
 load_dotenv()
 
-# Database configuration from environment variables
 db_config = {
     'host': os.getenv('DB_HOST'),
     'user': os.getenv('DB_USER'),
