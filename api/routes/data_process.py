@@ -1,5 +1,5 @@
-from app.db import get_db_connection, close_db_connection
-from app.enums import TransactionType
+from api.db import get_db_connection, close_db_connection
+from api.enums import TransactionType
 from flask import jsonify, request
 
 def transactions():
@@ -10,7 +10,6 @@ def transactions():
         close_db_connection(db)
 
         return jsonify({ 'rows': rows }), 200
-
 
 def balance():
     period_id = request.args.get('period_id')

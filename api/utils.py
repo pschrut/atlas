@@ -1,6 +1,6 @@
 from datetime import datetime
 import calendar
-from app.enums import TransactionType
+from api.enums import TransactionType
 
 def sanitize_xml(file_content):
     file_storage = file_content.read()
@@ -12,7 +12,6 @@ def sanitize_xml(file_content):
 
 def convert_to_float(value):
     return float(value.replace(',', ''))
-
 
 def convert_date(date_str):
     try:
@@ -45,5 +44,3 @@ def get_month_range(period_id):
     last_day = f"{year}-{month:02d}-{num_days}"  # Zero-padded month
 
     return {'first_day': first_day, 'last_day': last_day}
-
-
