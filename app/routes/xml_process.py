@@ -2,6 +2,7 @@ from app.enums import NodeNames
 from app.utils import sanitize_xml, convert_to_float, convert_date, get_type, get_month_range
 from lxml import etree
 from flask import request, jsonify
+from flask_login import login_required, current_user
 from app.models import Transaction, Period, User
 from app import db
 
@@ -24,10 +25,11 @@ def process_movement(movement):
             db.session.add(period)
             db.session.commit()
 
-        transaction = Transaction(period_id=period_id, user_id=1, date=date, description=description, value=abs(value), type=transaction_type, comments=None)
+        transaction = Transaction(period_id=period_id, user_id=current_user.id, date=date, description=description, value=abs(value), type=transaction_type, comments=None)
         db.session.add(transaction)
         db.session.commit()
 
+@login_required
 def upload_transactions():
     try:
         files = request.files.getlist('file')
