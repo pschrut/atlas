@@ -1,24 +1,17 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from dotenv import load_dotenv
 from flask_login import LoginManager
 from flask_migrate import Migrate
-from datetime import timedelta
 from flask_cors import CORS
-import os
+from app.config import DevelopmentConfig
 
 app = Flask(__name__)
 db = SQLAlchemy()
 bcrypt = Bcrypt(app)
 
 def create_app():
-    load_dotenv()
-    
-    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DB_ALCHEMY_URI')
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(seconds=int(os.getenv('SESSION_EXPIRE_SECONDS')))
+    app.config.from_object(DevelopmentConfig)
 
     login_manager = LoginManager()
     
