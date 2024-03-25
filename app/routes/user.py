@@ -12,12 +12,12 @@ def login():
     if user is None:
         return jsonify({ 'error': 'User not found' }), 404
     else:
-        if bcrypt.check_password_hash(user.password, password) == False:
+        if bcrypt.check_password_hash(user.password, password) is False:
             return jsonify({ 'error': 'Invalid password' }), 401
         else:
             login_user(user)
 
-    return jsonify({ 'message': 'Logged in' }), 200
+    return jsonify({ 'message': { 'logged_in_user': user.id } }), 200
 
 def register():    
     user = request.form.get('user')
@@ -28,9 +28,9 @@ def register():
     db.session.add(user)
     db.session.commit()
 
-    return jsonify({ 'message': 'User created' }), 201
+    return jsonify({ 'message': { 'created_user': user.id } }), 201
 
 @login_required
 def logout():
     logout_user()
-    return jsonify({ 'message': 'Logged out' }), 200
+    return jsonify({ 'message': { 'status': 'logged_out' } }), 200

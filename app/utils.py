@@ -44,3 +44,6 @@ def get_month_range(period_id):
     last_day = f"{year}-{month:02d}-{num_days}"  # Zero-padded month
 
     return {'first_day': first_day, 'last_day': last_day}
+
+def round_dict_values(d, precision=2):
+    return {key: round(value, precision) for key, value in d.items()}

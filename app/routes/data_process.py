@@ -1,6 +1,7 @@
 from app.enums import TransactionType
 from flask import jsonify, request
 from flask_login import login_required, current_user
+from app.utils import round_dict_values
 from app.models import Transaction
 from app import db
 
@@ -39,23 +40,25 @@ def balance():
 
     balance_in, balance_out, investments_in, investments_out, others = 0, 0, 0, 0, 0
     for row in transactions:
-        if row.type == TransactionType.INCOME.value:
+        if row.type is TransactionType.INCOME.value:
             balance_in += float(row.value)
-        elif row.type == TransactionType.OUTCOME.value:
+        elif row.type is TransactionType.OUTCOME.value:
             balance_out += float(row.value)
-        elif row.type == TransactionType.INVESTMENT_IN.value:
+        elif row.type is TransactionType.INVESTMENT_IN.value:
             investments_in += float(row.value)
-        elif row.type == TransactionType.INVESTMENT_OUT.value:
+        elif row.type is TransactionType.INVESTMENT_OUT.value:
             investments_out += float(row.value)
         else:
             others += float(row.value)
 
-    return jsonify({
-        'balance_in': round(balance_in, 2),
-        'balance_out': round(balance_out, 2),
-        'io_balance': round(balance_in - balance_out, 2),
-        'investments_in': round(investments_in, 2),
-        'investments_out': round(investments_out, 2),
-        'investments_balance': round(investments_in - investments_out, 2),
-        'others': round(others, 2)
-    }), 200
+    data = round_dict_values({
+        'balance_in': balance_in,
+        'balance_out': balance_out,
+        'investments_in': investments_in,
+        'investments_out': investments_out,
+        'io_balance': balance_in - balance_out,
+        'investments_balance': investments_in - investments_out,
+        'others': others
+    })
+
+    return jsonify(data), 200

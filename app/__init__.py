@@ -28,7 +28,7 @@ def create_app():
 
     with app.app_context():
         from app.models import User, Transaction, Period
-        from app.routes.routes import transactions_bp, user_bp
+        from app.routes import transactions_bp, user_bp
         
         db.create_all()
         app.register_blueprint(transactions_bp)

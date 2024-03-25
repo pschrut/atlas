@@ -43,8 +43,7 @@ def upload_transactions():
                 process_movement(movement)
                 counter += 1
             
-        success_message = f"Success - {counter} transactions processed."
-        return jsonify({ 'message': success_message }), 200
+        return jsonify({ 'status': 'success', 'transactions_counter': counter }), 200
     except KeyError:
         return jsonify({'error': 'File not found in request'}), 400
     except etree.XMLSyntaxError as e:
