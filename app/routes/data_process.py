@@ -3,8 +3,6 @@ from flask import jsonify, request
 from flask_login import login_required, current_user
 from app.utils import round_dict_values
 from app.models import Transaction
-from app import db
-from flask_cors import cross_origin
 
 @login_required
 def transactions():
