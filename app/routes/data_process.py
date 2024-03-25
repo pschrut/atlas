@@ -1,12 +1,22 @@
 from app.enums import TransactionType
-from flask import jsonify, request, session
+from flask import jsonify, request
 from flask_login import login_required, current_user
 from app.models import Transaction
 from app import db
 
 @login_required
-def transactions():    
-    query = Transaction.query.all()
+def transactions():
+    query = Transaction.query
+
+    if (request.args.get('period_id')):
+        query = query.filter(Transaction.period_id == request.args.get('period_id'))
+    if (request.args.get('year')):
+        query = query.filter(Transaction.period_id.like(f'%{request.args.get("year")}'))
+    if (request.args.get('type')):
+        query = query.filter(Transaction.type == request.args.get('type'))
+
+    query = query.filter(Transaction.user_id == current_user.id)
+
     transactions = [transaction.to_json() for transaction in query]
 
     return jsonify({ 'txs': transactions }), 200

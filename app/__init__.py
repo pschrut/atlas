@@ -1,11 +1,14 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
 from flask_login import LoginManager
-import os
 from flask_migrate import Migrate
+from datetime import timedelta
+import os
 
 db = SQLAlchemy()
+bcrypt = Bcrypt()
 
 def create_app():
     app = Flask(__name__)
@@ -13,10 +16,12 @@ def create_app():
     load_dotenv()
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DB_ALCHEMY_URI')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(seconds=int(os.getenv('SESSION_EXPIRE_SECONDS')))
 
     login_manager = LoginManager()
-    login_manager.init_app(app)
     
+    login_manager.init_app(app)
+    bcrypt.init_app(app)
     db.init_app(app)
     Migrate(app, db)
 
