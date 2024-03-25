@@ -12,8 +12,9 @@ bcrypt = Bcrypt()
 
 def create_app():
     app = Flask(__name__)
-    app.secret_key = os.getenv('SECRET_KEY')
     load_dotenv()
+    
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DB_ALCHEMY_URI')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(seconds=int(os.getenv('SESSION_EXPIRE_SECONDS')))
