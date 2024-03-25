@@ -5,13 +5,14 @@ from dotenv import load_dotenv
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from datetime import timedelta
+from flask_cors import CORS
 import os
 
+app = Flask(__name__)
 db = SQLAlchemy()
-bcrypt = Bcrypt()
+bcrypt = Bcrypt(app)
 
 def create_app():
-    app = Flask(__name__)
     load_dotenv()
     
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
@@ -31,6 +32,10 @@ def create_app():
         from app.routes import transactions_bp, user_bp
         
         db.create_all()
+
+        CORS(user_bp, supports_credentials=True)
+        CORS(transactions_bp, supports_credentials=True)
+
         app.register_blueprint(transactions_bp)
         app.register_blueprint(user_bp)
 

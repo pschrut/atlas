@@ -3,6 +3,7 @@ from flask_login import login_required, logout_user, login_user
 from app.models import User
 from app import bcrypt
 from app import db
+from flask_cors import cross_origin
 
 def login():
     user = request.form.get('user')
