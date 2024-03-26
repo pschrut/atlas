@@ -15,7 +15,7 @@ def transactions():
     if (request.args.get('type')):
         query = query.filter(Transaction.type == request.args.get('type'))
 
-    query = query.filter(Transaction.user_id == current_user.id)
+    query = query.filter(Transaction.user_id == current_user.id).order_by(Transaction.date.asc())
 
     transactions = [transaction.to_json() for transaction in query]
 

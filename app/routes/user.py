@@ -1,9 +1,8 @@
 from flask import request, jsonify
-from flask_login import login_required, logout_user, login_user
+from flask_login import login_required, logout_user, login_user, current_user
 from app.models import User
 from app import bcrypt
 from app import db
-from flask_cors import cross_origin
 
 def login():
     user = request.form.get('user')
@@ -35,3 +34,6 @@ def register():
 def logout():
     logout_user()
     return jsonify({ 'message': { 'status': 'logged_out' } }), 200
+
+def check_session():    
+    return jsonify({'isAuthenticated': current_user.is_authenticated}), 200

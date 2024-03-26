@@ -48,7 +48,3 @@ def upload_transactions():
         return jsonify({'error': 'File not found in request'}), 400
     except etree.XMLSyntaxError as e:
         return jsonify({'error': 'Could not parse XML', 'details': str(e)}), 400
-    
-def test_endpoint():
-    query = User.query.first()
-    return jsonify({ 'message': query.id }), 200
