@@ -6,6 +6,7 @@ class TransactionType(Enum):
     INVESTMENT_IN = '3'
     INVESTMENT_OUT = '4'
     OTHER = '5'
+    ALL = '6'
 
 class NodeNames(Enum):
     MOVIMIENTO = 'Movimiento'

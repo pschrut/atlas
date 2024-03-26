@@ -8,11 +8,11 @@ from app.models import Transaction
 def transactions():
     query = Transaction.query
 
-    if (request.args.get('period_id')):
+    if request.args.get('period_id'):
         query = query.filter(Transaction.period_id == request.args.get('period_id'))
-    if (request.args.get('year')):
+    if request.args.get('year'):
         query = query.filter(Transaction.period_id.like(f'%{request.args.get("year")}'))
-    if (request.args.get('type')):
+    if request.args.get('type') and request.args.get('type') != TransactionType.ALL.value:
         query = query.filter(Transaction.type == request.args.get('type'))
 
     query = query.filter(Transaction.user_id == current_user.id).order_by(Transaction.date.asc())
