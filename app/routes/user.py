@@ -17,7 +17,7 @@ def login():
         else:
             login_user(user)
 
-    return jsonify({ 'message': { 'logged_in_user': user.id } }), 200
+    return jsonify({ 'logged_in_user': { 'id': user.id, 'username': user.username } }), 200
 
 def register():    
     user = request.form.get('user')

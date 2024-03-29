@@ -3,6 +3,7 @@ from flask import jsonify, request
 from flask_login import login_required, current_user
 from app.utils import round_dict_values
 from app.models import Transaction
+from sqlalchemy import func
 
 @login_required
 def transactions():
@@ -14,12 +15,16 @@ def transactions():
         query = query.filter(Transaction.period_id.like(f'%{request.args.get("year")}'))
     if request.args.get('type') and request.args.get('type') != TransactionType.ALL.value:
         query = query.filter(Transaction.type == request.args.get('type'))
+    if request.args.get('ignore_lows') and request.args.get('ignore_lows') == 'true':
+        query = query.filter(Transaction.value > 1000)
 
     query = query.filter(Transaction.user_id == current_user.id).order_by(Transaction.date.asc())
 
+    total = query.with_entities(func.sum(Transaction.value)).scalar()
+
     transactions = [transaction.to_json() for transaction in query]
 
-    return jsonify({ 'txs': transactions }), 200
+    return jsonify({ 'txs': transactions, 'total': total or 0 }), 200
 
 @login_required
 def balance():
