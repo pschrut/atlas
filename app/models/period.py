@@ -8,3 +8,11 @@ class Period(db.Model):
 
     def __repr__(self):
         return '<Period %r>' % self.id
+    
+    def to_json(self):
+        return {
+            'id': self.id,
+            'description': self.description,
+            'startDate': self.startDate,
+            'endDate': self.endDate
+        }

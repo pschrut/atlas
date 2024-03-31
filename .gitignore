@@ -2,4 +2,5 @@
 .vscode
 .DS_Store
 venv
+periods
 __pycache__/
