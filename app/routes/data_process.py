@@ -18,7 +18,7 @@ def transactions():
     if request.args.get('ignore_lows') and request.args.get('ignore_lows') == 'true':
         query = query.filter(Transaction.value > 1000)
 
-    query = query.filter(Transaction.user_id == current_user.id).order_by(Transaction.date.asc())
+    query = query.filter(Transaction.user_id == current_user.id).order_by(Transaction.date.desc())
 
     total = query.with_entities(func.sum(Transaction.value)).scalar()
 

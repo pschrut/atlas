@@ -37,13 +37,24 @@ def get_type(value):
 
 def get_month_range(period_id):
     month = int(period_id[:-2])
-    year = 2000 + int(period_id[-2:])  # Assuming the years are in the format 'YY'
+    year = 2000 + int(period_id[-2:])
 
     num_days = calendar.monthrange(year, month)[1]
-    first_day = f"{year}-{month:02d}-01"  # Zero-padded month
-    last_day = f"{year}-{month:02d}-{num_days}"  # Zero-padded month
+    first_day = f"{year}-{month:02d}-01"
+    last_day = f"{year}-{month:02d}-{num_days}"
 
     return {'first_day': first_day, 'last_day': last_day}
+
+def get_month_description(period_id):
+    month = period_id[:2]
+    year = "20" + period_id[2:]
+
+    date_string = f"{year}/{month}/01"
+    date_object = datetime.strptime(date_string, "%Y/%m/%d")
+
+    formatted_date = date_object.strftime("%B %Y")
+
+    return formatted_date
 
 def round_dict_values(d, precision=2):
     return {key: round(value, precision) for key, value in d.items()}

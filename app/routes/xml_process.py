@@ -1,5 +1,5 @@
 from app.enums import NodeNames
-from app.utils import sanitize_xml, convert_to_float, convert_date, get_type, get_month_range
+from app.utils import sanitize_xml, convert_to_float, convert_date, get_type, get_month_range, get_month_description
 from lxml import etree
 from flask import request, jsonify
 from flask_login import login_required, current_user
@@ -21,7 +21,8 @@ def process_movement(movement):
         if period_query is None:
             startDate = get_month_range(period_id)['first_day']
             endDate = get_month_range(period_id)['last_day']
-            period = Period(id=period_id, description=None, startDate=startDate, endDate=endDate)
+            period_description = get_month_description(period_id)
+            period = Period(id=period_id, description=period_description, startDate=startDate, endDate=endDate)
             db.session.add(period)
             db.session.commit()
 
