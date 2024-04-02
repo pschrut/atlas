@@ -31,6 +31,13 @@ def register():
     return jsonify({ 'message': { 'created_user': user.id } }), 201
 
 @login_required
+def users():
+    query = User.query.all()
+    users_list = [user.to_json() for user in query]
+
+    return jsonify({ 'users': users_list })
+
+@login_required
 def logout():
     logout_user()
     return jsonify({ 'message': { 'status': 'logged_out' } }), 200
