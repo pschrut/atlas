@@ -3,4 +3,5 @@
 .DS_Store
 venv
 periods
+atlas.log
 __pycache__/

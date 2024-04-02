@@ -5,6 +5,9 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_cors import CORS
 from app.config import DevelopmentConfig
+import logging
+
+logging.basicConfig(filename='atlas.log', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 app = Flask(__name__)
 db = SQLAlchemy()

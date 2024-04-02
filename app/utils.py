@@ -13,6 +13,12 @@ def sanitize_xml(file_content):
 def convert_to_float(value):
     return float(value.replace(',', ''))
 
+def format_float(value):
+    if value.is_integer():
+        return int(value)
+    
+    return value
+
 def convert_date(date_str):
     try:
         date_obj = datetime.strptime(date_str, '%Y/%m/%d')
