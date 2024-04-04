@@ -1,12 +1,14 @@
 from app import db
+from flask_login import UserMixin
 
-class Period(db.Model):
+class Period(UserMixin, db.Model):
     __tablename__ = 'periods'
 
     id = db.Column(db.String(6), primary_key=True)
     description = db.Column(db.String(100))
     startDate = db.Column(db.Date)
     endDate = db.Column(db.Date)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     def __repr__(self):
         return '<Period %r>' % self.id

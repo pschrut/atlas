@@ -13,3 +13,7 @@ class NodeNames(Enum):
     VALOR = 'VALOR'
     FECHA = 'FECHA'
     DESCRIPCION = 'DESCRIPCION'
+
+class Roles(Enum):
+    ADMIN = 1
+    USER = 2

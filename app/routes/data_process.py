@@ -69,7 +69,8 @@ def balance():
 
 @login_required
 def periods():
-    query = Period.query.order_by(Period.startDate.desc()).all()
+    query = Period.query.filter_by(user_id=current_user.id).order_by(Period.startDate.desc()).all()
+
     periods_list = [period.to_json() for period in query]
 
     return jsonify({ 'periods': periods_list }), 200

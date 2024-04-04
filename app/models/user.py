@@ -11,6 +11,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(80), nullable=False)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), nullable=False)
     role = db.relationship('Role', backref=db.backref('roles', lazy=True))
+    periods = db.relationship('Period', backref=db.backref('users', lazy=True))
 
     def __repr__(self):
         return '<User %r>' % self.email

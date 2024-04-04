@@ -19,13 +19,13 @@ def process_movement(movement):
         transaction_type = get_type(value)
         period_id = convert_date(date)
 
-        period_query = Period.query.filter(Period.id == period_id).first()
+        period_query = Period.query.filter_by(user_id=current_user.id, id=period_id).first()
 
         if period_query is None:
             startDate = get_month_range(period_id)['first_day']
             endDate = get_month_range(period_id)['last_day']
             period_description = get_month_description(period_id)
-            period = Period(id=period_id, description=period_description, startDate=startDate, endDate=endDate)
+            period = Period(id=period_id, description=period_description, startDate=startDate, endDate=endDate, user_id=current_user.id)
             db.session.add(period)
             db.session.commit()
 
