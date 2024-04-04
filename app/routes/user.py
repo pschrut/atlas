@@ -5,10 +5,10 @@ from app import bcrypt
 from app import db
 
 def login():
-    user = request.form.get('user')
+    email = request.form.get('email')
     password = request.form.get('password')
 
-    user = User.query.filter(User.username == user).first()
+    user = User.query.filter(User.email == email).first()
     if user is None:
         return jsonify({ 'error': 'User not found' }), 404
     else:
@@ -20,11 +20,12 @@ def login():
     return jsonify({ 'logged_in_user': { 'id': user.id, 'username': user.username } }), 200
 
 def register():    
-    user = request.form.get('user')
+    username = request.form.get('username')
     email = request.form.get('email')
+    role = request.form.get('role')
     password = bcrypt.generate_password_hash(request.form.get('password')).decode('utf-8')
 
-    user = User(username=user, email=email, password=password)
+    user = User(username=username, email=email, password=password, role_id=role)
     db.session.add(user)
     db.session.commit()
 

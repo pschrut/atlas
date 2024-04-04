@@ -1,9 +1,11 @@
 from app import db
 
 class Transaction(db.Model):
+    __tablename__ = 'transactions'
+
     id = db.Column(db.Integer, primary_key=True)
-    period_id = db.Column(db.String(6), db.ForeignKey('period.id'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    period_id = db.Column(db.String(6), db.ForeignKey('periods.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     date = db.Column(db.Date, nullable=False)
     description = db.Column(db.String(100), nullable=False)
     value = db.Column(db.Float, nullable=False)

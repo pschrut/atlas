@@ -5,6 +5,7 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_cors import CORS
 from app.config import DevelopmentConfig
+from app.seed import seed_database
 import logging
 
 logging.basicConfig(filename='atlas.log', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -24,10 +25,11 @@ def create_app():
     Migrate(app, db)
 
     with app.app_context():
-        from app.models import User, Transaction, Period
+        from app.models import User, Transaction, Period, Role
         from app.routes import transactions_bp, user_bp
         
         db.create_all()
+        seed_database()
 
         CORS(user_bp, supports_credentials=True)
         CORS(transactions_bp, supports_credentials=True)
