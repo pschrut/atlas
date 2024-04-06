@@ -1,29 +1,22 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt
-from flask_login import LoginManager
-from flask_migrate import Migrate
 from flask_cors import CORS
 from app.config import DevelopmentConfig
 from app.seed import seed_database
+from app.extensions import db, bcrypt, migrate, login_manager
 import logging
 
 logging.basicConfig(filename='atlas.log', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 app = Flask(__name__)
-db = SQLAlchemy()
-bcrypt = Bcrypt(app)
 
 def create_app():
     app.config.from_object(DevelopmentConfig)
 
-    login_manager = LoginManager()
-    
-    login_manager.init_app(app)
-    bcrypt.init_app(app)
     db.init_app(app)
-    Migrate(app, db)
-
+    login_manager.init_app(app)
+    migrate.init_app(app, db)
+    bcrypt.init_app(app)
+    
     with app.app_context():
         from app.models import User, Transaction, Period, Role
         from app.routes import transactions_bp, user_bp
