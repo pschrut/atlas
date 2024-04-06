@@ -4,7 +4,22 @@ from lxml import etree
 from flask import request, jsonify
 from flask_login import login_required, current_user
 from app.models import Transaction, Period, User
-from app import db, app
+from app import db
+
+def process_period(period_code):
+    period_query = Period.query.filter_by(user_id=current_user.id, code=period_code).first()
+
+    if period_query is None:
+        startDate = get_month_range(period_code)['first_day']
+        endDate = get_month_range(period_code)['last_day']
+        period_description = get_month_description(period_code)
+        period = Period(code=period_code, description=period_description, startDate=startDate, endDate=endDate, user_id=current_user.id)
+        db.session.add(period)
+        db.session.commit()
+    else:
+        period = period_query
+
+    return period
 
 def process_movement(movement):
     value = movement.find(NodeNames.VALOR.value)
@@ -17,19 +32,11 @@ def process_movement(movement):
         description = movement.find(NodeNames.DESCRIPCION.value).text
         value = convert_to_float(value.text)
         transaction_type = get_type(value)
-        period_id = convert_date(date)
+        period_code = convert_date(date)
 
-        period_query = Period.query.filter_by(user_id=current_user.id, id=period_id).first()
+        period = process_period(period_code)
 
-        if period_query is None:
-            startDate = get_month_range(period_id)['first_day']
-            endDate = get_month_range(period_id)['last_day']
-            period_description = get_month_description(period_id)
-            period = Period(id=period_id, description=period_description, startDate=startDate, endDate=endDate, user_id=current_user.id)
-            db.session.add(period)
-            db.session.commit()
-
-        transaction = Transaction(period_id=period_id, user_id=current_user.id, date=date, description=description, value=abs(value), type=transaction_type, comments=None)
+        transaction = Transaction(period_id=period.id, user_id=current_user.id, date=date, description=description, value=abs(value), type=transaction_type, comments=None)
         db.session.add(transaction)
         db.session.commit()
 

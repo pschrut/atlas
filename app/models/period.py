@@ -1,10 +1,10 @@
 from app import db
-from flask_login import UserMixin
 
-class Period(UserMixin, db.Model):
+class Period(db.Model):
     __tablename__ = 'periods'
 
-    id = db.Column(db.String(6), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    code = db.Column(db.String(6), nullable=False)
     description = db.Column(db.String(100))
     startDate = db.Column(db.Date)
     endDate = db.Column(db.Date)
